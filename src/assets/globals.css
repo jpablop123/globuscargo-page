@@ -1,0 +1,53 @@
+/* ===== Underline anim (izquierda → derecha) ===== */
+.underline-anim {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .underline-anim::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 2px;
+    background-color: #f58220;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  
+  .underline-anim:hover::after,
+  .underline-anim:focus-visible::after,
+  .underline-anim:active::after {
+    transform: scaleX(1);
+  }
+  
+  /* ===== Hamburguesa animada ===== */
+  .burger {
+    width: 24px;
+    height: 18px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+  }
+  
+  .burger span {
+    display: block;
+    height: 3px;
+    background: white;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+  
+  .burger.open span:nth-child(1) {
+    transform: rotate(45deg) translateY(7px);
+  }
+  .burger.open span:nth-child(2) {
+    opacity: 0;
+  }
+  .burger.open span:nth-child(3) {
+    transform: rotate(-45deg) translateY(-7px);
+  }
