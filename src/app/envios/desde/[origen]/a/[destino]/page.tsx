@@ -2,7 +2,8 @@
 
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
-import { motion } from "framer-motion";
+// Eliminamos la importación de motion, ya que no se usa en este componente
+// import { motion } from "framer-motion"; 
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import Testimonials from "@/components/layout/testimonials"; 
@@ -16,31 +17,7 @@ import {
   FaPlaneDeparture,
 } from "react-icons/fa";
 
-// Variantes ligeramente ajustadas para sentir más "snappy" (rápidas y fluidas)
-const sectionVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.8,
-      ease: [0.22, 1, 0.36, 1], // Curva de Bezier personalizada (más elegante)
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: i * 0.1,
-      duration: 0.5,
-      ease: "easeOut",
-    },
-  }),
-};
+// Eliminamos las definiciones de variants
 
 export default function EnvioDinamicoPage() {
   const params = useParams();
@@ -78,27 +55,20 @@ export default function EnvioDinamicoPage() {
         {/* Fondo: Gradiente más sofisticado y rico */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#ff9a44] via-[#f58220] to-[#e06000] z-0"></div>
         
-        {/* Textura de ruido sutil (Noise) para evitar el "banding" del gradiente y dar textura */}
+        {/* Textura de ruido sutil (Noise) */}
         <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}></div>
 
-        {/* Elementos decorativos de fondo (Orbes abstractos) */}
+        {/* Elementos decorativos de fondo (Orbes abstractos - Ahora CSS Animation) */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <motion.div 
-                animate={{ rotate: 360 }}
-                transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
-                className="absolute -top-[20%] -right-[10%] w-[800px] h-[800px] border border-white/10 rounded-full border-dashed opacity-30"
+            <div 
+                className="absolute -top-[20%] -right-[10%] w-[800px] h-[800px] border border-white/10 rounded-full border-dashed opacity-30 animate-slow-spin"
             />
-             <motion.div 
-                animate={{ rotate: -360 }}
-                transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-                className="absolute top-[20%] -left-[10%] w-[600px] h-[600px] border border-white/5 rounded-full opacity-30"
+             <div 
+                className="absolute top-[20%] -left-[10%] w-[600px] h-[600px] border border-white/5 rounded-full opacity-30 animate-slow-spin-reverse"
             />
         </div>
 
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={sectionVariants}
+        <div
           className="relative z-10 max-w-5xl mx-auto"
         >
           {/* Badge pequeño superior */}
@@ -138,15 +108,11 @@ export default function EnvioDinamicoPage() {
               Consultar por WhatsApp
             </a>
           </div>
-        </motion.div>
+        </div>
       </section>
 
       {/* === VENTAJAS: Estilo "Bento Grid" limpio === */}
-      <motion.section
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
-        variants={sectionVariants}
+      <section
         className="py-24 md:py-32 px-6"
       >
         <div className="max-w-7xl mx-auto">
@@ -163,36 +129,27 @@ export default function EnvioDinamicoPage() {
               { icon: <FaShieldAlt />, title: "Carga 100% Asegurada", desc: "Tu tranquilidad es primero. Ofrecemos seguro completo sobre el valor declarado." },
               { icon: <FaDollarSign />, title: "Tarifas Competitivas", desc: "Sin costos ocultos. Pagas lo justo por el peso y volumen real de tu carga." },
             ].map((item, i) => (
-              <motion.div
+              <div
                 key={i}
-                custom={i}
-                variants={itemVariants}
-                className="group relative bg-white p-10 rounded-3xl border border-gray-100 shadow-sm hover:shadow-2xl hover:shadow-orange-500/10 transition-all duration-300 hover:-translate-y-2"
+                className="group relative bg-white p-10 rounded-3xl border border-gray-100 shadow-sm transition-all duration-300 hover:shadow-2xl hover:shadow-orange-500/10 hover:-translate-y-2"
               >
-                <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
-                    {/* Icono gigante decorativo fondo */}
-                    <div className="text-9xl text-[#f58220] transform rotate-12">{item.icon}</div>
-                </div>
-
+                {/* Eliminamos el icono gigante decorativo de fondo */}
+                
                 <div className="relative z-10">
-                    <div className="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center text-3xl text-[#f58220] mb-6 group-hover:scale-110 transition-transform duration-300 group-hover:bg-[#f58220] group-hover:text-white shadow-sm">
+                    <div className="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center text-3xl text-[#f58220] mb-6 transition-transform duration-300 group-hover:bg-[#f58220] group-hover:text-white shadow-sm">
                     {item.icon}
                     </div>
                     <h3 className="text-xl font-bold mb-3 text-gray-900 group-hover:text-[#f58220] transition-colors">{item.title}</h3>
                     <p className="text-gray-500 leading-relaxed group-hover:text-gray-600">{item.desc}</p>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* === CÓMO FUNCIONA: Diseño Conectado (Timeline) === */}
-      <motion.section
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        variants={sectionVariants}
+      <section
         className="py-24 bg-white relative overflow-hidden"
       >
         {/* Fondo decorativo sutil */}
@@ -214,14 +171,12 @@ export default function EnvioDinamicoPage() {
               { icon: <FaWarehouse />, title: "Recepción", step: "02", desc: "Recibimos, consolidamos y preparamos tu paquete." },
               { icon: <FaHome />, title: "Entrega", step: "03", desc: `Recibe en la puerta de tu casa en ${formattedDestino}.` },
             ].map((item, idx) => (
-              <motion.div
+              <div
                 key={idx}
-                custom={idx}
-                variants={itemVariants}
                 className="relative flex flex-col items-center text-center z-10 group"
               >
                 {/* Círculo del icono */}
-                <div className="relative w-24 h-24 bg-white rounded-full border-4 border-orange-50 shadow-xl flex items-center justify-center text-3xl text-gray-400 mb-8 group-hover:border-[#f58220] group-hover:text-[#f58220] transition-all duration-500 group-hover:scale-110">
+                <div className="relative w-24 h-24 bg-white rounded-full border-4 border-orange-50 shadow-xl flex items-center justify-center text-3xl text-gray-400 mb-8 group-hover:border-[#f58220] group-hover:text-[#f58220] transition-all duration-500 group-hover:scale-105">
                   {item.icon}
                   {/* Badge del número de paso */}
                   <div className="absolute -top-2 -right-2 w-8 h-8 bg-[#f58220] text-white rounded-full flex items-center justify-center font-bold text-sm shadow-md">
@@ -231,25 +186,22 @@ export default function EnvioDinamicoPage() {
 
                 <h3 className="text-2xl font-bold mb-3 text-gray-900">{item.title}</h3>
                 <p className="text-gray-500 max-w-xs mx-auto">{item.desc}</p>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* === TESTIMONIOS === */}
       <section className="py-24 bg-slate-50 border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-6">
-            <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+            <div 
                 className="text-center mb-16"
             >
                 <h2 className="text-3xl md:text-5xl font-extrabold text-[#1a1a1a]">
                 Experiencias Reales
                 </h2>
-            </motion.div>
+            </div>
             <Testimonials />
         </div>
       </section>
@@ -261,11 +213,7 @@ export default function EnvioDinamicoPage() {
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#f58220] opacity-20 blur-[120px] rounded-full translate-x-1/2 -translate-y-1/2"></div>
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#f58220] opacity-10 blur-[100px] rounded-full -translate-x-1/2 translate-y-1/2"></div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
+        <div
           className="relative z-10 max-w-4xl mx-auto text-center"
         >
           <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tight">
@@ -291,7 +239,7 @@ export default function EnvioDinamicoPage() {
               Contactar Soporte
             </a>
           </div>
-        </motion.div>
+        </div>
       </section>
 
       <Footer />

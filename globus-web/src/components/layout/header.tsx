@@ -23,13 +23,19 @@ const Header = () => {
   };
 
   const toggleSection = (section: string) => {
+    // Si la sección ya está abierta, la cierra (null). Si no, abre la nueva sección.
     setOpenSection((prev) => (prev === section ? null : section));
   };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (!navRef.current) return;
-      if (!navRef.current.contains(event.target as Node)) closeAll();
+      // Añadimos un pequeño retraso para evitar que el clic en el botón se interprete como clic exterior
+      setTimeout(() => {
+          if (!navRef.current!.contains(event.target as Node)) {
+              closeAll();
+          }
+      }, 10); 
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
@@ -48,10 +54,43 @@ const Header = () => {
     <Link
       href={href}
       onClick={closeAll}
-      className="block text-gray-700 hover:text-[#f58220] transition font-medium"
+      className="block text-gray-700 hover:text-[#f58220] transition font-medium py-1"
     >
       {label}
     </Link>
+  );
+
+  // Componente para manejar el despliegue de las subsecciones
+  const DropdownSection = ({ sectionName, sectionKey, children }: { sectionName: string, sectionKey: string, children: React.ReactNode }) => (
+    <div className="relative">
+        <button
+          onClick={() => toggleSection(sectionKey)}
+          className="hover:text-[#f58220] transition w-full text-left"
+        >
+          {/* Escritorio */}
+          <span className="hidden lg:inline">
+            <Underline>{sectionName} ▾</Underline>
+          </span>
+          {/* Móvil (Acordeón) */}
+          <span className="lg:hidden text-[#f58220] font-semibold flex justify-between items-center py-2 border-b border-gray-100">
+             {sectionName}
+             <span className={`transform transition-transform duration-200 ${openSection === sectionKey ? 'rotate-180' : 'rotate-0'}`}>▾</span>
+          </span>
+        </button>
+
+        {/* Contenido (Visible en Desktop o si la sección está abierta en Mobile) */}
+        {openSection === sectionKey && (
+          <div className="
+             lg:absolute lg:top-full lg:mt-2 lg:bg-white lg:shadow-lg lg:rounded-xl lg:w-56 lg:py-2 
+             lg:block 
+             pt-2
+          ">
+            <div className='pl-4 lg:pl-0 space-y-2'>
+                {children}
+            </div>
+          </div>
+        )}
+    </div>
   );
 
   return (
@@ -95,84 +134,45 @@ const Header = () => {
           </Link>
         </div>
 
-        {/* ===== DESKTOP NAV ===== */}
+        {/* ===== DESKTOP NAV (Usando DropdownSection) ===== */}
         <div className="hidden lg:flex items-center space-x-6 text-[15px]">
+          
           {/* Personas */}
-          <div className="relative">
-            <button
-              onClick={() => toggleSection("personas")}
-              className="hover:text-[#f58220] transition"
-            >
-              <Underline>Personas ▾</Underline>
-            </button>
-            {openSection === "personas" && (
-              <div className="absolute top-full mt-2 bg-white shadow-lg rounded-xl w-56 py-2">
-                <Link href="/tarifas" className="block px-4 py-2 hover:text-[#f58220]">Tarifas USA → COL</Link>
-                <Link href="/colombiausa" className="block px-4 py-2 hover:text-[#f58220]">COL → USA</Link>
-                <Link href="/casillero" className="block px-4 py-2 hover:text-[#f58220]">Casillero Virtual</Link>
-                <Link href="/preguntas" className="block px-4 py-2 hover:text-[#f58220]">Preguntas Frecuentes</Link>
-              </div>
-            )}
-          </div>
+          <DropdownSection sectionName="Personas" sectionKey="personas">
+            <Link href="/tarifas" className="block px-4 py-2 hover:text-[#f58220]">Tarifas USA → COL</Link>
+            <Link href="/colombiausa" className="block px-4 py-2 hover:text-[#f58220]">COL → USA</Link>
+            <Link href="/casillero" className="block px-4 py-2 hover:text-[#f58220]">Casillero Virtual</Link>
+            <Link href="/preguntas" className="block px-4 py-2 hover:text-[#f58220]">Preguntas Frecuentes</Link>
+          </DropdownSection>
 
           {/* Envíos */}
-          <div className="relative">
-            <button
-              onClick={() => toggleSection("envios")}
-              className="hover:text-[#f58220] transition"
-            >
-              <Underline>Envíos ▾</Underline>
-            </button>
-            {openSection === "envios" && (
-              <div className="absolute top-full mt-2 bg-white shadow-lg rounded-xl w-56 py-2">
-                <Link href="/cotizar" className="block px-4 py-2 hover:text-[#f58220]">Cotizar Envío</Link>
-                <Link href="/track" className="block px-4 py-2 hover:text-[#f58220]">Rastrear Paquete</Link>
-              </div>
-            )}
-          </div>
+          <DropdownSection sectionName="Envíos" sectionKey="envios">
+            <Link href="/cotizar" className="block px-4 py-2 hover:text-[#f58220]">Cotizar Envío</Link>
+            <Link href="/track" className="block px-4 py-2 hover:text-[#f58220]">Rastrear Paquete</Link>
+          </DropdownSection>
 
           {/* Empresas */}
-          <div className="relative">
-            <button
-              onClick={() => toggleSection("empresas")}
-              className="hover:text-[#f58220] transition"
-            >
-              <Underline>Empresas ▾</Underline>
-            </button>
-            {openSection === "empresas" && (
-              <div className="absolute top-full mt-2 bg-white shadow-lg rounded-xl w-56 py-2">
-                <Link href="/corporativo" className="block px-4 py-2 hover:text-[#f58220]">Corporativo</Link>
-              </div>
-            )}
-          </div>
+          <DropdownSection sectionName="Empresas" sectionKey="empresas">
+            <Link href="/corporativo" className="block px-4 py-2 hover:text-[#f58220]">Corporativo</Link>
+          </DropdownSection>
 
           {/* Información */}
-          <div className="relative">
-            <button
-              onClick={() => toggleSection("info")}
-              className="hover:text-[#f58220] transition"
-            >
-              <Underline>Información ▾</Underline>
-            </button>
-            {openSection === "info" && (
-              <div className="absolute top-full mt-2 bg-white shadow-lg rounded-xl w-56 py-2">
-                <Link href="/como-funciona" className="block px-4 py-2 hover:text-[#f58220]">Cómo Funciona</Link>
-                <Link href="/nosotros" className="block px-4 py-2 hover:text-[#f58220]">Nosotros</Link>
-                <Link href="/terminos" className="block px-4 py-2 hover:text-[#f58220]">Términos</Link>
-                <Link href="/contacto" className="block px-4 py-2 hover:text-[#f58220]">Contáctanos</Link>
-              </div>
-            )}
-          </div>
+          <DropdownSection sectionName="Información" sectionKey="info">
+            <Link href="/como-funciona" className="block px-4 py-2 hover:text-[#f58220]">Cómo Funciona</Link>
+            <Link href="/nosotros" className="block px-4 py-2 hover:text-[#f58220]">Nosotros</Link>
+            <Link href="/terminos" className="block px-4 py-2 hover:text-[#f58220]">Términos</Link>
+            <Link href="/contacto" className="block px-4 py-2 hover:text-[#f58220]">Contáctanos</Link>
+          </DropdownSection>
         </div>
 
         {/* ===== CTA RIGHT ===== */}
         <div className="hidden lg:flex items-center space-x-3">
         <Link
-  href="https://agencias.globuscargo.us/#/sign-in"
-  className="px-4 py-2 rounded-full text-[#f58220] border border-[#f58220] bg-white hover:bg-[#f58220] hover:text-white transition-all font-semibold shadow-sm hover:shadow-md"
->
-  Iniciar Sesión
-</Link>
+          href="https://agencias.globuscargo.us/#/sign-in"
+          className="px-4 py-2 rounded-full text-[#f58220] border border-[#f58220] bg-white hover:bg-[#f58220] hover:text-white transition-all font-semibold shadow-sm hover:shadow-md"
+        >
+          Iniciar Sesión
+        </Link>
           <Link
             href="/cotizar"
             className="px-4 py-2 border border-[#f58220] rounded-full text-[#f58220] hover:bg-[#f58220] hover:text-white transition font-semibold"
@@ -188,47 +188,52 @@ const Header = () => {
         </div>
       </div>
 
-      {/* ===== MOBILE MENU ===== */}
+      {/* ===== MOBILE MENU (Convertido a Acordeón) ===== */}
       {isOpen && (
         <div className="lg:hidden bg-white shadow-xl rounded-b-3xl mx-3 mt-2 pb-5 pt-4 border border-gray-200">
-          <ul className="space-y-6 px-5 text-[16px] font-medium text-gray-800">
+          <ul className="space-y-2 px-5 text-[16px] font-medium text-gray-800">
+            
             {/* Personas */}
-            <li>
-              <p className="text-[#f58220] font-semibold mb-2">Personas</p>
-              <MobileItem href="/tarifas" label="Tarifas USA → COL" />
-              <MobileItem href="/colombiausa" label="COL → USA" />
-              <MobileItem href="/casillero" label="Casillero Virtual" />
-              <MobileItem href="/preguntas" label="Preguntas Frecuentes" />
+            <li className="border-b border-gray-100">
+              <DropdownSection sectionName="Personas" sectionKey="personas">
+                  <MobileItem href="/tarifas" label="Tarifas USA → COL" />
+                  <MobileItem href="/colombiausa" label="COL → USA" />
+                  <MobileItem href="/casillero" label="Casillero Virtual" />
+                  <MobileItem href="/preguntas" label="Preguntas Frecuentes" />
+              </DropdownSection>
             </li>
 
             {/* Envíos */}
-            <li>
-              <p className="text-[#f58220] font-semibold mt-4 mb-2">Envíos</p>
-              <MobileItem href="/cotizar" label="Cotizar Envío" />
-              <MobileItem href="/track" label="Rastrear Paquete" />
-              <MobileItem href="/servicios" label="Servicios" />
+            <li className="border-b border-gray-100">
+              <DropdownSection sectionName="Envíos" sectionKey="envios">
+                  <MobileItem href="/cotizar" label="Cotizar Envío" />
+                  <MobileItem href="/track" label="Rastrear Paquete" />
+                  <MobileItem href="/servicios" label="Servicios" />
+              </DropdownSection>
             </li>
-
+            
             {/* Empresas */}
-            <li>
-              <p className="text-[#f58220] font-semibold mt-4 mb-2">Empresas</p>
-              <MobileItem href="/corporativo" label="Corporativo" />
-              <MobileItem href="/alianzas" label="Alianzas" />
+            <li className="border-b border-gray-100">
+              <DropdownSection sectionName="Empresas" sectionKey="empresas">
+                  <MobileItem href="/corporativo" label="Corporativo" />
+                  <MobileItem href="/alianzas" label="Alianzas" />
+              </DropdownSection>
             </li>
 
             {/* Información */}
-            <li>
-              <p className="text-[#f58220] font-semibold mt-4 mb-2">Información</p>
-              <MobileItem href="/como-funciona" label="Cómo Funciona" />
-              <MobileItem href="/nosotros" label="Nosotros" />
-              <MobileItem href="/terminos" label="Términos" />
-              <MobileItem href="/contacto" label="Contáctanos" />
+            <li className="border-b border-gray-100">
+              <DropdownSection sectionName="Información" sectionKey="info">
+                  <MobileItem href="/como-funciona" label="Cómo Funciona" />
+                  <MobileItem href="/nosotros" label="Nosotros" />
+                  <MobileItem href="/terminos" label="Términos" />
+                  <MobileItem href="/contacto" label="Contáctanos" />
+              </DropdownSection>
             </li>
 
-            {/* CTA */}
+            {/* CTA (Fijos) */}
             <li className="pt-4 flex flex-col gap-2 border-t border-gray-200">
               <Link
-                href="/login"
+                href="https://agencias.globuscargo.us/#/sign-in"
                 className="text-center border border-gray-300 text-gray-700 py-2 rounded-full hover:text-[#f58220] hover:border-[#f58220] transition font-medium"
                 onClick={closeAll}
               >

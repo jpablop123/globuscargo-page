@@ -7,9 +7,11 @@ import Footer from "@/components/layout/footer";
 import { ChevronDown } from "lucide-react";
 
 export default function PreguntasFrecuentesPage() {
-  const [active, setActive] = useState(null);
+  // 1. Tipamos el estado para que acepte string o null
+  const [active, setActive] = useState<string | null>(null);
 
-  const toggle = (index) => {
+  // 2. Tipamos el parámetro 'index' como string (porque es el ID único)
+  const toggle = (index: string) => {
     setActive(active === index ? null : index);
   };
 

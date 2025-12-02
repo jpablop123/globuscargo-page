@@ -71,11 +71,8 @@ export default function EnviosColombiaUSA() {
             </div>
           </div>
 
-          {/* Imagen con logo integrado */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1 }}
+          {/* Imagen con logo integrado (FIX: Reemplazo por div estático) */}
+          <div
             className="relative flex justify-center"
           >
             <div className="relative inline-block">
@@ -92,11 +89,8 @@ export default function EnviosColombiaUSA() {
               <div className="absolute -top-6 -left-6 w-20 h-20 bg-yellow-300/40 rounded-full blur-2xl" />
               <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-white/20 rounded-full blur-2xl" />
 
-              {/* Logo en borde, integrado visualmente */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.4 }}
+              {/* Logo en borde, integrado visualmente (FIX: Reemplazo por div estático) */}
+              <div
                 className="
                   absolute 
                   -bottom-8 
@@ -129,15 +123,16 @@ export default function EnviosColombiaUSA() {
                   />
                   <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#f58220]/10 to-white/5 blur-xl" />
                 </div>
-              </motion.div>
+              </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* === EXPLICACIÓN === */}
       <section className="py-20 px-6 lg:px-12 relative">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+          {/* Mantenemos motion.div para whileInView, pero eliminamos className si causa problemas */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}

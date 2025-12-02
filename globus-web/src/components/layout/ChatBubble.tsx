@@ -18,12 +18,13 @@ function useChatbotLoader() {
   useEffect(() => {
     // 1a. Prevención de carga: Chequea si ya se cargó globalmente (entre navegaciones SPA)
     // o si el componente está siendo montado por primera vez en este ciclo.
-    if (isComponentMounted.current || window.chatbaseLoaded) {
+    // FIX: Usamos (window as any) para evitar el error de TypeScript
+    if (isComponentMounted.current || (window as any).chatbaseLoaded) {
       return;
     }
 
     // 1b. Marcar como cargado (para prevenir recargas en futuras navegaciones SPA)
-    window.chatbaseLoaded = true;
+    (window as any).chatbaseLoaded = true;
     isComponentMounted.current = true;
 
     // --- Cargar script del chatbot ---
@@ -56,7 +57,7 @@ function useChatbotLoader() {
   useEffect(() => {
     const handleBeforeUnload = () => {
       // Restablece la bandera global solo cuando la página se va a descargar completamente
-      window.chatbaseLoaded = false;
+      (window as any).chatbaseLoaded = false;
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);

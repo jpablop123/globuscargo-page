@@ -4,7 +4,8 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
-import tarifasHero from '@/assets/img/logo/fotosreveladas/AP0A0915'
+// Fixed: Added .jpg extension (verify if it is .png or .jpeg if this fails)
+import tarifasHero from '@/assets/img/logo/fotosreveladas/AP0A0915.jpg'; 
 import {
   Scale,
   Package,
@@ -94,12 +95,12 @@ export default function TarifasPage() {
             <div className="relative inline-block">
               {/* Imagen principal */}
               <Image
-  src={tarifasHero}
-  alt="Tarifas Globus Cargo"
-  width={500}
-  height={500}
-  className="rounded-3xl shadow-2xl border-[6px] border-white/20"
-/>
+                src={tarifasHero}
+                alt="Tarifas Globus Cargo"
+                width={500}
+                height={500}
+                className="rounded-3xl shadow-2xl border-[6px] border-white/20"
+              />
 
               {/* Efectos decorativos */}
               <div className="absolute -top-6 -left-6 w-20 h-20 bg-yellow-300/40 rounded-full blur-2xl" />

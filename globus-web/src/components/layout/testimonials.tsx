@@ -2,30 +2,32 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Instagram } from "lucide-react";
-import adrianAlvarez from "@/assets/img/logo/fotosreveladas/adrianalvarez.jpeg"
 import Image from "next/image";
-import catarodriguez from "@/assets/img/logo/fotosreveladas/catalianrodriguez.jpeg"
-import nicoCortes from "@/assets/img/logo/fotosreveladas/nicolas cortes.jpeg"
-import joseBravo from "@/assets/img/logo/fotosreveladas/josebravo.jpeg"
-import eduard from "@/assets/img/logo/fotosreveladas/eduardo oliveros.jpeg"
-import jose from "@/assets/img/logo/fotosreveladas/josealejandro.jpeg"
-import marcela from "@/assets/img/logo/fotosreveladas/marcela.jpeg"
+
+// Importación de imágenes
+import adrianAlvarez from "@/assets/img/logo/fotosreveladas/adrianalvarez.jpeg";
+import catarodriguez from "@/assets/img/logo/fotosreveladas/catalianrodriguez.jpeg";
+import nicoCortes from "@/assets/img/logo/fotosreveladas/nicolas cortes.jpeg";
+import joseBravo from "@/assets/img/logo/fotosreveladas/josebravo.jpeg";
+import eduard from "@/assets/img/logo/fotosreveladas/eduardo oliveros.jpeg";
+import jose from "@/assets/img/logo/fotosreveladas/josealejandro.jpeg";
+import marcela from "@/assets/img/logo/fotosreveladas/marcela.jpeg";
+
 // --- UTILIDAD DE PLACEHOLDER ---
-// Esta función genera un placeholder con la inicial del cliente.
-// Reemplaza el valor de imgSrc en el array 'testimonials' con la URL real de la foto.
-const getPlaceholderUrl = (name) => {
+// CORRECCIÓN: Se agrega el tipo ': string' al parámetro name
+const getPlaceholderUrl = (name: string) => {
     const initial = name.charAt(0).toUpperCase();
     return `https://placehold.co/100x100/f58220/ffffff?text=${initial}&font=sans-serif`;
 }
 
-// --- DATOS DE TESTIMONIOS (imgSrc agregado) ---
+// --- DATOS DE TESTIMONIOS ---
 const testimonials = [
     {
         name: "Adrian Alvarez",
         city: "Bogotá",
         ig: "@adrianzon",
         text: "Excelente servicio, mis compras llegaron puntuales y en perfecto estado. Los recomiendo totalmente.",
-        imgSrc: adrianAlvarez, // ✅ Reemplazo del placeholder por imagen importada
+        imgSrc: adrianAlvarez,
       },
   {
     name: "Catalina Rodriguez",
@@ -39,35 +41,35 @@ const testimonials = [
     city: "Bogota",
     ig: "@nicolascortesd",
     text: "La atención por WhatsApp fue inmediata, sentí mucha confianza. Seguiré usando Globus Cargo.",
-    imgSrc: nicoCortes//// Reemplazar con la URL de la foto de Mariana
+    imgSrc: nicoCortes
   },
   {
     name: "Jose Fernando Bravo",
     city: "Bogota",
     ig: "@josebravo100",
     text: "El proceso fue súper fácil, desde que registré mi casillero hasta que recibí en casa.",
-    imgSrc: joseBravo//// Reemplazar con la URL de la foto de Andrés
+    imgSrc: joseBravo
   },
   {
     name: "Eduardo Oliveros",
     city: "Medellin",
     ig: "@eduardoliveros",
     text: "Rápidos, seguros y económicos. Mi pedidos siempre con Globus.",
-    imgSrc: eduard// // Reemplazar con la URL de la foto de Valentina
+    imgSrc: eduard
   },
   {
     name: "Jose Alejandro",
     city: "Barranquilla",
     ig: "@jpinva2003",
     text: "Pensé que sería complicado, pero todo fue transparente y confiable. Muy satisfecho.",
-    imgSrc: jose // Reemplazar con la URL de la foto de Julián
+    imgSrc: jose
   },
   {
     name: "Marcela Vasquez",
     city: "Barranquilla",
     ig: "@marcela.v.galeano.3",
     text: "Yo solo quería que llegara bien… y llegó perfecto, sin enredos ni vueltas raras. Hasta me sorprendió lo fácil que fue. Ya tengo lista la próxima compra",
-    imgSrc: marcela // Reemplazar con la URL de la foto de Julián
+    imgSrc: marcela
   },
 ];
 
@@ -89,7 +91,7 @@ export default function App() {
   // Custom styling for the glowing card effect on hover
   const cardStyle = {
     '--tw-shadow-color': 'rgba(245, 130, 32, 0.4)', // Base orange shadow color
-  };
+  } as React.CSSProperties; // CORRECCIÓN ADICIONAL: Casteo de estilo para CSS variables
 
   return (
     <section className="relative py-20 md:py-24 px-4 sm:px-6 bg-gray-50 overflow-hidden font-sans">
@@ -145,15 +147,13 @@ export default function App() {
                   <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-white 
                   bg-gradient-to-tr from-[#f58220] to-[#ff944d] p-[3px] shadow-lg">
                     <div className="rounded-full w-full h-full bg-white overflow-hidden">
-                      {/* --- USO DE LA NUEVA PROPIEDAD imgSrc --- */}
                       <Image
-  src={testimonials[current].imgSrc}
-  alt={testimonials[current].name}
-  width={94}
-  height={94}
-  className="object-cover w-full h-full rounded-full"
-/>
-                      {/* ------------------------------------- */}
+                        src={testimonials[current].imgSrc}
+                        alt={testimonials[current].name}
+                        width={94}
+                        height={94}
+                        className="object-cover w-full h-full rounded-full"
+                      />
                     </div>
                   </div>
 
