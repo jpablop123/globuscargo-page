@@ -1,7 +1,6 @@
 "use client";
-import logo from "@/assets/img/logo/globuswhite.png"
+
 import Image from "next/image";
-import { motion } from "framer-motion";
 import {
   Facebook,
   Instagram,
@@ -9,199 +8,125 @@ import {
   Mail,
   Phone,
   MapPin,
-  Package,
-  Users,
-  Ship,
-  Globe,
+  ArrowRight,
 } from "lucide-react";
-import { useEffect, useState } from "react";
-
-// ===== Hook contador animado =====
-function useCounter(end: number, duration = 2000) {
-  const [count, setCount] = useState(0);
-  useEffect(() => {
-    let start = 0;
-    const increment = end / (duration / 16);
-    const timer = setInterval(() => {
-      start += increment;
-      if (start >= end) {
-        start = end;
-        clearInterval(timer);
-      }
-      setCount(Math.floor(start));
-    }, 16);
-    return () => clearInterval(timer);
-  }, [end, duration]);
-  return count;
-}
+import logo from "@/assets/img/logo/globuswhite.png";
 
 export default function Footer() {
-  const clients = useCounter(3000);
-  const packages = useCounter(65000);
-  const cargos = useCounter(3000);
-  const global = useCounter(2000);
+  // Gris original de la paleta
+  const grayPalette = "rgb(132,126,126)";
 
   return (
-    <footer className="relative overflow-hidden bg-[rgb(132,126,126)] text-white border-t border-white/20">
-      {/* === Fondo decorativo sutil === */}
-      <motion.div
-        animate={{ opacity: [0.05, 0.12, 0.05] }}
-        transition={{ repeat: Infinity, duration: 8 }}
-        className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.08),transparent_80%)]"
-      />
+    <footer className="text-white font-sans relative" style={{ backgroundColor: grayPalette }}>
+      
+      {/* === CONTENIDO PRINCIPAL === */}
+      <div className="relative py-16 px-6 overflow-hidden">
+        
+        {/* Fondo Mapa Mundial Sutil (Decorativo) */}
+        <div className="absolute inset-0 opacity-10 pointer-events-none mix-blend-overlay" style={{ 
+            backgroundImage: 'url("https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg")',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            backgroundSize: 'cover',
+        }}></div>
+        
+        {/* Sombra superior suave para dar profundidad */}
+        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-black/10 to-transparent z-10 pointer-events-none"></div>
 
-      {/* === Métricas === */}
-      <section className="relative z-10 max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 px-6 py-16 text-center">
-        {[
-          { icon: Users, label: "Clientes Atendidos", value: clients },
-          { icon: Package, label: "Paquetes Entregados", value: packages },
-          { icon: Ship, label: "Cargas Transportadas", value: cargos },
-          { icon: Globe, label: "Envíos Internacionales", value: global },
-        ].map((stat, i) => (
-          <motion.div
-            key={i}
-            whileHover={{ scale: 1.06 }}
-            className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl py-6 shadow-[0_2px_10px_rgba(255,255,255,0.1)] transition-all"
-          >
-            <stat.icon
-              className="mx-auto mb-3 text-[#f58220] drop-shadow-[0_0_8px_rgba(245,130,32,0.5)]"
-              size={34}
-            />
-            <h3 className="text-3xl font-bold text-white">
-              {stat.value.toLocaleString()}+
-            </h3>
-            <p className="text-sm text-white/90 mt-1">{stat.label}</p>
-          </motion.div>
-        ))}
-      </section>
+        <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-12 relative z-10">
+            
+            {/* Columna 1: Brand & Social */}
+            <div className="space-y-6">
+                <Image
+                    src={logo}
+                    alt="Globus Cargo"
+                    width={180}
+                    height={60}
+                    className="opacity-100 drop-shadow-md"
+                />
+                <p className="text-white/90 text-sm leading-relaxed font-medium max-w-sm drop-shadow-sm">
+                    Conectando fronteras y simplificando la logística global. Tu socio estratégico para envíos rápidos y seguros entre USA y Latinoamérica.
+                </p>
+                <div className="flex gap-4 pt-2">
+                    {[
+                        { icon: Instagram, href: "https://instagram.com" },
+                        { icon: Facebook, href: "https://facebook.com" },
+                        { icon: Linkedin, href: "https://linkedin.com" }
+                    ].map((social, i) => (
+                        <a 
+                            key={i} 
+                            href={social.href} 
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white hover:bg-[#f58220] hover:border-[#f58220] hover:-translate-y-1 transition-all duration-300 shadow-sm"
+                        >
+                            <social.icon size={18} />
+                        </a>
+                    ))}
+                </div>
+            </div>
 
-      {/* === Contenido principal === */}
-      <section className="relative z-10 max-w-7xl mx-auto px-6 pb-20 grid md:grid-cols-4 gap-12">
-        {/* Logo + descripción */}
-        <div className="space-y-4">
-          <Image
-            src= {logo}
-            alt="Globus Cargo"
-            width={160}
-            height={60}
-            className="drop-shadow-[0_0_12px_rgba(255,255,255,0.4)]"
-          />
-          <p className="text-sm text-white/90 max-w-xs leading-relaxed">
-            En <span className="text-[#f58220] font-semibold">Globus Cargo</span> conectamos el
-            comercio entre USA y Latinoamérica con soluciones logísticas rápidas,
-            seguras y personalizadas.
-          </p>
+            {/* Columna 2: Enlaces Rápidos */}
+            <div className="md:pl-10">
+                <h3 className="text-white font-bold text-lg mb-6 flex items-center gap-3 drop-shadow-sm">
+                    <span className="w-1 h-6 bg-[#f58220] rounded-full shadow-sm"></span> Compañía
+                </h3>
+                <ul className="space-y-3">
+                    {[
+                        { label: "Sobre Nosotros", href: "/nosotros" },
+                        { label: "Casillero Virtual", href: "/casillero" },
+                        { label: "Tarifas y Precios", href: "/tarifas" },
+                        { label: "Rastrear Envío", href: "/track" }
+                    ].map((link, i) => (
+                        <li key={i}>
+                            <a href={link.href} className="text-white/90 hover:text-white hover:translate-x-1 transition-all flex items-center gap-2 text-sm group font-medium">
+                                <ArrowRight size={14} className="text-[#f58220] transition-transform duration-300" />
+                                {link.label}
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+
+            {/* Columna 3: Contacto */}
+            <div>
+                <h3 className="text-white font-bold text-lg mb-6 flex items-center gap-3 drop-shadow-sm">
+                    <span className="w-1 h-6 bg-[#f58220] rounded-full shadow-sm"></span> Contacto
+                </h3>
+                <ul className="space-y-5">
+                    <li className="flex items-start gap-4 text-white/90 text-sm font-medium group">
+                        <div className="bg-white/10 p-2 rounded-lg group-hover:bg-[#f58220] transition-colors shadow-sm">
+                            <MapPin className="text-white" size={18} />
+                        </div>
+                        <span className="mt-1">2120 NW 96th Ave<br/>Doral, FL 33172, USA</span>
+                    </li>
+                    <li className="flex items-center gap-4 text-white/90 text-sm font-medium group">
+                        <div className="bg-white/10 p-2 rounded-lg group-hover:bg-[#f58220] transition-colors shadow-sm">
+                            <Phone className="text-white" size={18} />
+                        </div>
+                        <span>+1 (786) 531-7987</span>
+                    </li>
+                    <li className="flex items-center gap-4 text-white/90 text-sm font-medium group">
+                         <div className="bg-white/10 p-2 rounded-lg group-hover:bg-[#f58220] transition-colors shadow-sm">
+                            <Mail className="text-white" size={18} />
+                        </div>
+                        <span>info@globuscargo.com</span>
+                    </li>
+                </ul>
+            </div>
+
         </div>
+      </div>
 
-        {/* Servicios */}
-        <div>
-          <h3 className="text-lg font-semibold text-white mb-4">Servicios</h3>
-          <ul className="space-y-2 text-sm">
-            <li>
-              <a
-                href="https://globuscargo.us/#/sign-up?a=cec123e3-17bf-4be8-8f46-1fe6ec3d31b7"
-                className="hover:text-[#f58220] hover:underline decoration-[#f58220] decoration-2 underline-offset-4 transition-all"
-              >
-                Casillero en Miami
-              </a>
-            </li>
-            <li>
-              <a
-                href="/rastrear"
-                className="hover:text-[#f58220] hover:underline decoration-[#f58220] decoration-2 underline-offset-4 transition-all"
-              >
-                Rastreo de Paquetes
-              </a>
-            </li>
-            <li>
-              <a
-                href="/cotizar"
-                className="hover:text-[#f58220] hover:underline decoration-[#f58220] decoration-2 underline-offset-4 transition-all"
-              >
-                Cotizar Envío
-              </a>
-            </li>
-          </ul>
+      {/* === COPYRIGHT === */}
+      <div className="border-t border-white/10 bg-black/10 backdrop-blur-sm relative z-10">
+        <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-white/70 font-medium">
+            <p>© {new Date().getFullYear()} <span className="text-white font-bold">Globus Cargo</span>. Todos los derechos reservados.</p>
+            <div className="flex gap-6">
+                <a href="/terminos" className="hover:text-[#f58220] transition-colors">Términos y Condiciones</a>
+                <a href="/privacidad" className="hover:text-[#f58220] transition-colors">Política de Privacidad</a>
+            </div>
         </div>
-
-        {/* Empresa */}
-        <div>
-          <h3 className="text-lg font-semibold text-white mb-4">Empresa</h3>
-          <ul className="space-y-2 text-sm">
-            <li>
-              <a
-                href="/nosotros"
-                className="hover:text-[#f58220] hover:underline decoration-[#f58220] decoration-2 underline-offset-4 transition-all"
-              >
-                Sobre Nosotros
-              </a>
-            </li>
-            <li>
-              <a
-                href="/corporativo"
-                className="hover:text-[#f58220] hover:underline decoration-[#f58220] decoration-2 underline-offset-4 transition-all"
-              >
-                Clientes Corporativos
-              </a>
-            </li>
-            <li>
-              <a
-                href="/contacto"
-                className="hover:text-[#f58220] hover:underline decoration-[#f58220] decoration-2 underline-offset-4 transition-all"
-              >
-                Contáctanos
-              </a>
-            </li>
-          </ul>
-        </div>
-
-        {/* Contacto */}
-        <div>
-          <h3 className="text-lg font-semibold text-white mb-4">Contáctanos</h3>
-          <ul className="space-y-3 text-sm">
-            <li className="flex items-center gap-2">
-              <Phone size={16} className="text-[#f58220]" /> +1 (786) 531-7987
-            </li>
-            <li className="flex items-center gap-2">
-              <Mail size={16} className="text-[#f58220]" /> info@globuscargo.com
-            </li>
-            <li className="flex items-start gap-2">
-              <MapPin size={16} className="text-[#f58220] mt-1" />
-              <span>2120 NW 96th Ave<br />Doral, FL 33172, USA</span>
-            </li>
-          </ul>
-
-          {/* Redes */}
-          <div className="flex gap-4 mt-6">
-            {[
-              { icon: Instagram, url: "https://instagram.com/globuscargo_" },
-              { icon: Facebook, url: "https://facebook.com/globuscargo" },
-              { icon: Linkedin, url: "https://linkedin.com/company/globuscargo" },
-            ].map((s, i) => (
-              <motion.a
-                key={i}
-                whileHover={{
-                  scale: 1.15,
-                  backgroundColor: "#fff",
-                  color: "#f58220",
-                  boxShadow: "0 0 15px rgba(255,255,255,0.5)",
-                }}
-                href={s.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 rounded-full bg-[rgba(255,255,255,0.15)] transition-all duration-300"
-              >
-                <s.icon size={20} />
-              </motion.a>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* === Línea final === */}
-      <div className="relative z-10 border-t border-white/30 py-6 text-center text-sm text-white/80">
-        © {new Date().getFullYear()}{" "}
-        <span className="text-[#f58220] font-semibold">Globus Cargo</span>. Todos los derechos reservados.
       </div>
     </footer>
   );
